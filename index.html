@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adszone — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12162A;
+    --panel:#1B2140;
+    --panel-2:#232A4C;
+    --paper:#F3F1EA;
+    --paper-dim:#9A98A8;
+    --line:#333B63;
+    --amber:#FFC94B;
+    --mint:#63E6A8;
+    --red:#FF8A80;
+    --sans:'Inter', sans-serif;
+    --serif:'Fraunces', serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  button{font-family:var(--sans); cursor:pointer;}
+  input,select{font-family:var(--sans);}
+
+  /* ---------- LOGIN ---------- */
+  #loginScreen{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .login-card{
+    width:100%;
+    max-width:380px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:40px 36px;
+  }
+  .login-wordmark{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:6px;
+  }
+  .login-wordmark .dot{width:9px;height:9px;border-radius:50%;background:var(--amber);}
+  .login-sub{color:var(--paper-dim); font-size:14px; margin:0 0 28px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:13px; color:var(--paper-dim); margin-bottom:6px;}
+  .field input, .field select{
+    width:100%;
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:12px 14px;
+    color:var(--paper);
+    font-size:15px;
+  }
+  .field input:focus-visible, .field select:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:1px;
+  }
+  .role-toggle{
+    display:flex;
+    border:1px solid var(--line);
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+  .role-toggle button{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--paper-dim);
+    padding:11px 0;
+    font-size:14px;
+    font-weight:600;
+  }
+  .role-toggle button.active{
+    background:var(--amber);
+    color:var(--ink);
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    padding:13px 0;
+    border-radius:3px;
+    border:none;
+    font-weight:700;
+    font-size:15px;
+    background:var(--amber);
+    color:var(--ink);
+  }
+  .btn:hover{background:#ffd876;}
+  .btn:focus-visible{outline:2px solid var(--paper); outline-offset:2px;}
+  .btn-secondary{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--paper);
+  }
+  .btn-secondary:hover{border-color:var(--paper-dim);}
+  .btn-danger{background:transparent; border:1px solid var(--red); color:var(--red);}
+  .btn-danger:hover{background:rgba(255,138,128,0.1);}
+  .login-error{
+    color:var(--red);
+    font-size:13px;
+    margin-top:12px;
+    min-height:16px;
+  }
+  .login-hint{
+    margin-top:22px;
+    font-size:12.5px;
+    color:var(--paper-dim);
+    border-top:1px solid var(--line);
+    padding-top:16px;
+    line-height:1.6;
+  }
+
+  /* ---------- DASHBOARD ---------- */
+  #dashboard{
+    display:grid;
+    grid-template-columns:230px 1fr;
+    min-height:100vh;
+  }
+  aside{
+    background:var(--panel);
+    border-right:1px solid var(--line);
+    padding:28px 20px;
+    display:flex;
+    flex-direction:column;
+  }
+  .side-wordmark{
+    font-family:var(--serif);
+    font-size:19px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:4px;
+  }
+  .side-wordmark .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);}
+  .side-role{
+    font-size:12px;
+    color:var(--paper-dim);
+    margin:0 0 32px;
+    padding-left:16px;
+  }
+  .side-nav{list-style:none; margin:0; padding:0; flex:1;}
+  .side-nav li{margin-bottom:4px;}
+  .side-nav button{
+    width:100%;
+    text-align:left;
+    background:transparent;
+    border:none;
+    color:var(--paper-dim);
+    padding:11px 14px;
+    border-radius:4px;
+    font-size:14.5px;
+    font-weight:500;
+  }
+  .side-nav button.active{background:var(--panel-2); color:var(--paper);}
+  .side-nav button:hover{color:var(--paper);}
+  .side-nav button .badge{
+    float:right;
+    background:var(--line);
+    color:var(--paper-dim);
+    font-size:11px;
+    padding:1px 7px;
+    border-radius:8px;
+  }
+  #logoutBtn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--paper-dim);
+    padding:10px 0;
+    border-radius:4px;
+    font-size:14px;
+  }
+  #logoutBtn:hover{border-color:var(--paper-dim); color:var(--paper);}
+
+  main{padding:36px 44px; overflow-x:hidden;}
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .page-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-bottom:28px;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .page-head h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:26px;
+    margin:0 0 6px;
+  }
+  .page-head p{color:var(--paper-dim); font-size:14.5px; margin:0;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:5px;
+    overflow:hidden;
+    margin-bottom:32px;
+  }
+  .stat-cell{
+    padding:22px 24px;
+    border-left:1px solid var(--line);
+  }
+  .stat-cell:first-child{border-left:none;}
+  .stat-cell .num{
+    font-family:var(--serif);
+    font-size:30px;
+    font-weight:500;
+    display:block;
+  }
+  .stat-cell .lbl{font-size:13px; color:var(--paper-dim); margin-top:4px;}
+
+  .panel-box{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:5px;
+    overflow:hidden;
+  }
+  .panel-box-head{
+    padding:18px 22px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .panel-box-head h2{
+    font-size:16px;
+    font-weight:700;
+    margin:0;
+  }
+  .add-lead-btn{
+    background:var(--amber);
+    color:var(--ink);
+    border:none;
+    padding:9px 16px;
+    border-radius:3px;
+    font-size:13.5px;
+    font-weight:700;
+  }
+  .add-lead-btn:hover{background:#ffd876;}
+
+  table{width:100%; border-collapse:collapse; font-size:14px;}
+  thead th{
+    text-align:left;
+    font-size:12px;
+    color:var(--paper-dim);
+    font-weight:600;
+    padding:12px 22px;
+    border-bottom:1px solid var(--line);
+  }
+  tbody td{
+    padding:14px 22px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  .service-tag{
+    display:inline-block;
+    font-size:12px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:20px;
+  }
+  .service-meta{background:rgba(155,140,255,0.18); color:#B7ACFF;}
+  .service-snapchat{background:rgba(255,201,75,0.18); color:var(--amber);}
+  .service-google{background:rgba(99,230,168,0.18); color:var(--mint);}
+  .service-all{background:rgba(255,255,255,0.1); color:var(--paper);}
+
+  .status-select{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    color:var(--paper);
+    border-radius:3px;
+    padding:6px 8px;
+    font-size:13px;
+  }
+  .status-pill{
+    font-size:13px;
+    padding:5px 10px;
+    border-radius:20px;
+    background:var(--panel-2);
+    color:var(--paper-dim);
+  }
+  .row-actions{display:flex; gap:10px;}
+  .row-actions button{
+    background:transparent;
+    border:none;
+    color:var(--paper-dim);
+    font-size:13px;
+    padding:0;
+  }
+  .row-actions button:hover{color:var(--paper);}
+  .row-actions .del{color:var(--red);}
+  .row-actions .del:hover{color:#ffb3ab;}
+
+  .empty-state{
+    padding:48px 22px;
+    text-align:center;
+    color:var(--paper-dim);
+    font-size:14.5px;
+  }
+
+  /* Modal */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(10,12,24,0.6);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:24px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:32px;
+    width:100%;
+    max-width:420px;
+  }
+  .modal h2{font-family:var(--serif); font-weight:500; font-size:20px; margin:0 0 20px;}
+  .modal .field{margin-bottom:14px;}
+  .modal-actions{display:flex; gap:10px; margin-top:8px;}
+
+  /* Settings */
+  .settings-form .field{max-width:420px;}
+  .save-note{font-size:13px; color:var(--mint); min-height:18px; margin-top:6px;}
+
+  @media (max-width:860px){
+    #dashboard{grid-template-columns:1fr;}
+    aside{
+      flex-direction:row;
+      align-items:center;
+      padding:16px 20px;
+      overflow-x:auto;
+    }
+    .side-role{display:none;}
+    .side-nav{display:flex; gap:6px; flex:none;}
+    .side-nav li{margin:0;}
+    #logoutBtn{margin-left:auto; white-space:nowrap;}
+    main{padding:24px 20px;}
+    .stat-row{grid-template-columns:1fr 1fr;}
+    .stat-cell:nth-child(2){border-left:1px solid var(--line);}
+    .stat-cell:nth-child(3){border-left:none; border-top:1px solid var(--line);}
+    .stat-cell:nth-child(4){border-top:1px solid var(--line);}
+    table{display:block; overflow-x:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-wordmark"><span class="dot"></span>Adszone</div>
+    <p class="login-sub">Sign in to the admin panel</p>
+
+    <div class="role-toggle" role="tablist" aria-label="Choose role">
+      <button type="button" id="roleSuperBtn" class="active" data-role="super">Super Admin</button>
+      <button type="button" id="roleStaffBtn" data-role="staff">Staff</button>
+    </div>
+
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" autocomplete="username" required>
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn">Sign in</button>
+      <div class="login-error" id="loginError"></div>
+    </form>
+
+    <div class="login-hint">
+      Demo credentials — Super Admin: <strong>admin / admin123</strong><br>
+      Staff (view-only): <strong>staff / staff123</strong>
+    </div>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" hidden>
+  <aside>
+    <div class="side-wordmark"><span class="dot"></span>Adszone</div>
+    <p class="side-role" id="sideRoleLabel">Super Admin</p>
+    <ul class="side-nav">
+      <li><button type="button" class="nav-btn active" data-view="overview">Overview</button></li>
+      <li><button type="button" class="nav-btn" data-view="leads">Leads <span class="badge" id="leadCountBadge">0</span></button></li>
+      <li><button type="button" class="nav-btn" data-view="settings" id="settingsNavBtn">Settings</button></li>
+    </ul>
+    <button type="button" id="logoutBtn">Log out</button>
+  </aside>
+
+  <main>
+    <!-- OVERVIEW -->
+    <section class="view active" id="view-overview">
+      <div class="page-head">
+        <div>
+          <h1>Overview</h1>
+          <p>A quick read on lead volume across platforms.</p>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat-cell"><span class="num" id="statTotal">0</span><span class="lbl">Total leads</span></div>
+        <div class="stat-cell"><span class="num" id="statMeta">0</span><span class="lbl">Meta Ads</span></div>
+        <div class="stat-cell"><span class="num" id="statSnap">0</span><span class="lbl">Snapchat Ads</span></div>
+        <div class="stat-cell"><span class="num" id="statGoogle">0</span><span class="lbl">Google Ads</span></div>
+      </div>
+      <div class="panel-box">
+        <div class="panel-box-head"><h2>Most recent leads</h2></div>
+        <table>
+          <thead><tr><th>Name</th><th>WhatsApp</th><th>Service</th><th>Status</th></tr></thead>
+          <tbody id="recentLeadsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section class="view" id="view-leads">
+      <div class="page-head">
+        <div>
+          <h1>Leads</h1>
+          <p id="leadsSubtitle">Everyone who requested an audit from the site.</p>
+        </div>
+      </div>
+      <div class="panel-box">
+        <div class="panel-box-head">
+          <h2>All leads</h2>
+          <button type="button" class="add-lead-btn" id="addLeadBtn">Add lead</button>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>WhatsApp</th><th>Service</th><th>Status</th><th></th></tr></thead>
+          <tbody id="allLeadsBody"></tbody>
+        </table>
+        <div class="empty-state" id="leadsEmptyState" style="display:none;">No leads yet.</div>
+      </div>
+    </section>
+
+    <!-- SETTINGS (super admin only) -->
+    <section class="view" id="view-settings">
+      <div class="page-head">
+        <div>
+          <h1>Settings</h1>
+          <p>Business details used across the site and admin panel.</p>
+        </div>
+      </div>
+      <div class="panel-box" style="padding:28px;">
+        <form class="settings-form" id="settingsForm">
+          <div class="field">
+            <label for="setAgencyName">Agency name</label>
+            <input type="text" id="setAgencyName">
+          </div>
+          <div class="field">
+            <label for="setWhatsapp">Business WhatsApp number</label>
+            <input type="text" id="setWhatsapp" placeholder="+91 98765 43210">
+          </div>
+          <button type="submit" class="btn" style="max-width:200px;">Save changes</button>
+          <div class="save-note" id="settingsNote"></div>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ================= ADD LEAD MODAL ================= -->
+<div class="modal-overlay" id="addLeadModal">
+  <div class="modal">
+    <h2>Add lead</h2>
+    <form id="addLeadForm">
+      <div class="field">
+        <label for="newLeadName">Name</label>
+        <input type="text" id="newLeadName" required>
+      </div>
+      <div class="field">
+        <label for="newLeadWhatsapp">WhatsApp number</label>
+        <input type="text" id="newLeadWhatsapp" required>
+      </div>
+      <div class="field">
+        <label for="newLeadService">Service</label>
+        <select id="newLeadService" required>
+          <option value="meta">Meta Ads</option>
+          <option value="snapchat">Snapchat Ads</option>
+          <option value="google">Google Ads</option>
+          <option value="all">All three platforms</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-secondary" id="cancelAddLead">Cancel</button>
+        <button type="submit" class="btn">Add lead</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  // ---------- Demo accounts (client-side only, for this admin panel) ----------
+  const ACCOUNTS = {
+    super: { username: 'admin', password: 'admin123', label: 'Super Admin' },
+    staff: { username: 'staff', password: 'staff123', label: 'Staff (view-only)' }
+  };
+
+  let selectedRole = 'super';
+  let currentRole = null;
+  let leads = [];
+  let settings = { agencyName: 'Adszone', whatsapp: '' };
+
+  const SERVICE_LABELS = { meta: 'Meta Ads', snapchat: 'Snapchat Ads', google: 'Google Ads', all: 'All three platforms' };
+  const SERVICE_CLASS = { meta: 'service-meta', snapchat: 'service-snapchat', google: 'service-google', all: 'service-all' };
+
+  function uid(){ return 'l_' + Date.now() + '_' + Math.random().toString(36).slice(2,7); }
+
+  // ---------- Storage helpers (shared across everyone using this panel) ----------
+  async function loadData(){
+    try{
+      const leadsRes = await window.storage.get('adszone:leads', true);
+      leads = leadsRes ? JSON.parse(leadsRes.value) : seedLeads();
+    }catch(e){
+      leads = seedLeads();
+      try{ await window.storage.set('adszone:leads', JSON.stringify(leads), true); }catch(e2){}
+    }
+    try{
+      const settingsRes = await window.storage.get('adszone:settings', true);
+      settings = settingsRes ? JSON.parse(settingsRes.value) : settings;
+    }catch(e){
+      try{ await window.storage.set('adszone:settings', JSON.stringify(settings), true); }catch(e2){}
+    }
+  }
+
+  function seedLeads(){
+    return [
+      { id: uid(), name: 'Rohan Mehta', whatsapp: '+91 98200 11122', service: 'meta', status: 'New' },
+      { id: uid(), name: 'Priya Nair', whatsapp: '+91 90040 55210', service: 'google', status: 'Contacted' },
+      { id: uid(), name: 'Karan Sethi', whatsapp: '+91 99870 33456', service: 'snapchat', status: 'New' },
+      { id: uid(), name: 'Ayesha Khan', whatsapp: '+91 98765 22110', service: 'all', status: 'Closed' }
+    ];
+  }
+
+  async function saveLeads(){
+    try{ await window.storage.set('adszone:leads', JSON.stringify(leads), true); }catch(e){}
+  }
+  async function saveSettings(){
+    try{ await window.storage.set('adszone:settings', JSON.stringify(settings), true); }catch(e){}
+  }
+
+  // ---------- Login ----------
+  const roleSuperBtn = document.getElementById('roleSuperBtn');
+  const roleStaffBtn = document.getElementById('roleStaffBtn');
+  roleSuperBtn.addEventListener('click', () => setRoleTab('super'));
+  roleStaffBtn.addEventListener('click', () => setRoleTab('staff'));
+  function setRoleTab(role){
+    selectedRole = role;
+    roleSuperBtn.classList.toggle('active', role === 'super');
+    roleStaffBtn.classList.toggle('active', role === 'staff');
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    const account = ACCOUNTS[selectedRole];
+    const errorEl = document.getElementById('loginError');
+
+    if(user === account.username && pass === account.password){
+      currentRole = selectedRole;
+      errorEl.textContent = '';
+      enterDashboard();
+    } else {
+      errorEl.textContent = 'Incorrect username or password for ' + account.label + '.';
+    }
+  });
+
+  async function enterDashboard(){
+    document.getElementById('loginScreen').hidden = true;
+    document.getElementById('dashboard').hidden = false;
+    document.getElementById('sideRoleLabel').textContent = ACCOUNTS[currentRole].label;
+
+    const isSuper = currentRole === 'super';
+    document.getElementById('addLeadBtn').style.display = isSuper ? 'inline-flex' : 'none';
+    document.getElementById('settingsNavBtn').style.display = isSuper ? '' : 'none';
+    document.getElementById('leadsSubtitle').textContent = isSuper
+      ? 'Everyone who requested an audit from the site. Update status or remove leads as they close out.'
+      : 'Everyone who requested an audit from the site. View-only access.';
+
+    await loadData();
+    renderAll();
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', function(){
+    currentRole = null;
+    document.getElementById('dashboard').hidden = true;
+    document.getElementById('loginScreen').hidden = false;
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  });
+
+  // ---------- Nav ----------
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('view-' + this.dataset.view).classList.add('active');
+    });
+  });
+
+  // ---------- Rendering ----------
+  function renderAll(){
+    renderStats();
+    renderRecent();
+    renderLeadsTable();
+    document.getElementById('leadCountBadge').textContent = leads.length;
+    document.getElementById('setAgencyName').value = settings.agencyName || '';
+    document.getElementById('setWhatsapp').value = settings.whatsapp || '';
+  }
+
+  function renderStats(){
+    document.getElementById('statTotal').textContent = leads.length;
+    document.getElementById('statMeta').textContent = leads.filter(l => l.service === 'meta' || l.service === 'all').length;
+    document.getElementById('statSnap').textContent = leads.filter(l => l.service === 'snapchat' || l.service === 'all').length;
+    document.getElementById('statGoogle').textContent = leads.filter(l => l.service === 'google' || l.service === 'all').length;
+  }
+
+  function renderRecent(){
+    const body = document.getElementById('recentLeadsBody');
+    const recent = leads.slice(-5).reverse();
+    body.innerHTML = recent.map(l => `
+      <tr>
+        <td>${escapeHtml(l.name)}</td>
+        <td>${escapeHtml(l.whatsapp)}</td>
+        <td><span class="service-tag ${SERVICE_CLASS[l.service]}">${SERVICE_LABELS[l.service]}</span></td>
+        <td><span class="status-pill">${escapeHtml(l.status)}</span></td>
+      </tr>
+    `).join('') || '<tr><td colspan="4" style="color:var(--paper-dim);">No leads yet.</td></tr>';
+  }
+
+  function renderLeadsTable(){
+    const body = document.getElementById('allLeadsBody');
+    const isSuper = currentRole === 'super';
+    document.getElementById('leadsEmptyState').style.display = leads.length ? 'none' : 'block';
+
+    body.innerHTML = leads.slice().reverse().map(l => `
+      <tr data-id="${l.id}">
+        <td>${escapeHtml(l.name)}</td>
+        <td>${escapeHtml(l.whatsapp)}</td>
+        <td><span class="service-tag ${SERVICE_CLASS[l.service]}">${SERVICE_LABELS[l.service]}</span></td>
+        <td>
+          ${isSuper
+            ? `<select class="status-select status-input">
+                 ${['New','Contacted','Closed'].map(s => `<option value="${s}" ${s===l.status?'selected':''}>${s}</option>`).join('')}
+               </select>`
+            : `<span class="status-pill">${escapeHtml(l.status)}</span>`}
+        </td>
+        <td>
+          ${isSuper ? `<div class="row-actions"><button type="button" class="del">Remove</button></div>` : ''}
+        </td>
+      </tr>
+    `).join('');
+
+    if(isSuper){
+      body.querySelectorAll('tr').forEach(row => {
+        const id = row.dataset.id;
+        const statusSelect = row.querySelector('.status-input');
+        if(statusSelect){
+          statusSelect.addEventListener('change', async function(){
+            const lead = leads.find(l => l.id === id);
+            if(lead){ lead.status = this.value; await saveLeads(); renderStats(); renderRecent(); }
+          });
+        }
+        const delBtn = row.querySelector('.del');
+        if(delBtn){
+          delBtn.addEventListener('click', async function(){
+            leads = leads.filter(l => l.id !== id);
+            await saveLeads();
+            renderAll();
+          });
+        }
+      });
+    }
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+  // ---------- Add lead modal (super admin only) ----------
+  const modal = document.getElementById('addLeadModal');
+  document.getElementById('addLeadBtn').addEventListener('click', () => modal.classList.add('show'));
+  document.getElementById('cancelAddLead').addEventListener('click', () => modal.classList.remove('show'));
+  modal.addEventListener('click', function(e){ if(e.target === modal) modal.classList.remove('show'); });
+
+  document.getElementById('addLeadForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const name = document.getElementById('newLeadName').value.trim();
+    const whatsapp = document.getElementById('newLeadWhatsapp').value.trim();
+    const service = document.getElementById('newLeadService').value;
+    if(!name || !whatsapp) return;
+
+    leads.push({ id: uid(), name, whatsapp, service, status: 'New' });
+    await saveLeads();
+    renderAll();
+    this.reset();
+    modal.classList.remove('show');
+  });
+
+  // ---------- Settings (super admin only) ----------
+  document.getElementById('settingsForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    settings.agencyName = document.getElementById('setAgencyName').value.trim() || 'Adszone';
+    settings.whatsapp = document.getElementById('setWhatsapp').value.trim();
+    await saveSettings();
+    const note = document.getElementById('settingsNote');
+    note.textContent = 'Saved.';
+    setTimeout(() => { note.textContent = ''; }, 2000);
+  });
+})();
+</script>
+
+</body>
+</html>
