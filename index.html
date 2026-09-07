@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adszone — Meta, Snapchat &amp; Google Ads</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12162A;
+    --panel:#1B2140;
+    --panel-2:#232A4C;
+    --paper:#F3F1EA;
+    --paper-dim:#C9C7C0;
+    --line:#333B63;
+    --amber:#FFC94B;
+    --mint:#63E6A8;
+    --violet:#9B8CFF;
+    --max-w:1180px;
+    --serif: 'Fraunces', serif;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;}
+  img,svg{display:block;}
+
+  .wrap{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(18,22,42,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:76px;
+  }
+  .wordmark{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:600;
+    letter-spacing:0.01em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .wordmark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--amber);
+    flex:none;
+  }
+  .navlinks{
+    display:flex;
+    gap:32px;
+    font-size:15px;
+  }
+  .navlinks a{
+    text-decoration:none;
+    color:var(--paper-dim);
+    transition:color .15s ease;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--paper);}
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:12px 22px;
+    border-radius:3px;
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:15px;
+    text-decoration:none;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--amber);
+    color:var(--ink);
+  }
+  .btn-primary:hover{background:#ffd876;}
+  .btn-primary:focus-visible{outline:2px solid var(--paper); outline-offset:2px;}
+
+  .btn-ghost{
+    background:transparent;
+    border-color:var(--line);
+    color:var(--paper);
+  }
+  .btn-ghost:hover{border-color:var(--paper-dim);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 88px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:64px;
+    align-items:start;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(34px, 4.6vw, 58px);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0 0 24px;
+    max-width:15ch;
+  }
+  .hero p.lede{
+    font-size:18px;
+    color:var(--paper-dim);
+    max-width:46ch;
+    margin:0 0 32px;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+  }
+
+  .ticker{
+    padding:22px 24px;
+  }
+  .ticker-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:16px 0;
+  }
+  .ticker-row + .ticker-row{
+    border-top:1px solid var(--line);
+  }
+  .mark{
+    flex:none;
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .mark-meta{background:linear-gradient(135deg, #5B7CFF 0%, #9B8CFF 100%);}
+  .mark-snap{background:var(--amber);}
+  .mark-google{background:var(--mint);}
+  .mark svg{width:16px;height:16px;}
+
+  .ticker-info{flex:1; min-width:0;}
+  .ticker-info .label{
+    font-size:13px;
+    color:var(--paper-dim);
+    margin:0 0 3px;
+  }
+  .ticker-info .platform{
+    font-size:15px;
+    font-weight:600;
+    margin:0;
+  }
+  .ticker-num{
+    font-family:var(--serif);
+    font-size:22px;
+    font-weight:500;
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .ticker-foot{
+    padding:14px 24px;
+    border-top:1px solid var(--line);
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- PLATFORMS ---------- */
+  section{
+    padding:88px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(26px, 3vw, 36px);
+    margin:0;
+    max-width:20ch;
+  }
+  .section-head p{
+    color:var(--paper-dim);
+    max-width:36ch;
+    margin:0;
+    font-size:15.5px;
+  }
+
+  .platform-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .platform-card{
+    padding:32px 28px;
+    border-left:1px solid var(--line);
+  }
+  .platform-card:first-child{border-left:none;}
+  .platform-card .mark{width:40px; height:40px; border-radius:10px; margin-bottom:20px;}
+  .platform-card .mark svg{width:19px;height:19px;}
+  .platform-card h3{
+    font-family:var(--sans);
+    font-size:19px;
+    font-weight:700;
+    margin:0 0 10px;
+  }
+  .platform-card p.desc{
+    color:var(--paper-dim);
+    font-size:14.5px;
+    margin:0 0 18px;
+  }
+  .platform-card ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+    font-size:14px;
+  }
+  .platform-card li{
+    padding:9px 0;
+    border-top:1px solid var(--line);
+    color:var(--paper);
+  }
+  .platform-card li:first-child{border-top:none;}
+
+  /* ---------- PROCESS ---------- */
+  .process-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:28px;
+  }
+  .process-step{
+    padding-top:20px;
+    border-top:2px solid var(--line);
+  }
+  .process-step .num{
+    font-family:var(--serif);
+    font-size:15px;
+    color:var(--amber);
+    display:block;
+    margin-bottom:14px;
+  }
+  .process-step h3{
+    font-size:17px;
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  .process-step p{
+    color:var(--paper-dim);
+    font-size:14.5px;
+    margin:0;
+  }
+
+  /* ---------- RESULTS ---------- */
+  .results-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .stat{
+    padding:40px 28px;
+    border-left:1px solid var(--line);
+  }
+  .stat:first-child{border-left:none;}
+  .stat .num{
+    font-family:var(--serif);
+    font-size:clamp(36px, 4.4vw, 52px);
+    font-weight:500;
+    color:var(--paper);
+    display:block;
+    font-variant-numeric:tabular-nums;
+  }
+  .stat .num .accent{color:var(--mint);}
+  .stat p{
+    color:var(--paper-dim);
+    font-size:14.5px;
+    margin:10px 0 0;
+    max-width:26ch;
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-section{
+    border-bottom:none;
+    text-align:left;
+  }
+  .cta-panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:56px;
+    display:grid;
+    grid-template-columns:1.2fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  .cta-panel h2{max-width:14ch;}
+  .cta-panel p{
+    color:var(--paper-dim);
+    font-size:15.5px;
+    margin:14px 0 0;
+    max-width:40ch;
+  }
+  form.audit-form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .audit-form input[type="text"],
+  .audit-form input[type="tel"],
+  .audit-form select{
+    background:var(--panel-2);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:14px 16px;
+    color:var(--paper);
+    font-family:var(--sans);
+    font-size:15px;
+    width:100%;
+  }
+  .audit-form select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C9C7C0' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 14px center;
+    background-size:16px;
+    padding-right:40px;
+  }
+  .audit-form select:invalid{color:var(--paper-dim);}
+  .audit-form option{color:var(--ink);}
+  .audit-form input[type="text"]::placeholder,
+  .audit-form input[type="tel"]::placeholder{color:var(--paper-dim);}
+  .audit-form input[type="text"]:focus-visible,
+  .audit-form input[type="tel"]:focus-visible,
+  .audit-form select:focus-visible{
+    outline:2px solid var(--amber);
+    outline-offset:1px;
+  }
+  .audit-form .btn{width:100%;}
+  .form-note{
+    font-size:13px;
+    color:var(--paper-dim);
+    min-height:18px;
+  }
+  .form-note.success{color:var(--mint);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:40px 0;
+  }
+  .footer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-row .wordmark{font-size:17px;}
+  .footer-links{
+    display:flex;
+    gap:24px;
+    font-size:14px;
+    color:var(--paper-dim);
+  }
+  .footer-links a{text-decoration:none;}
+  .footer-links a:hover{color:var(--paper);}
+  .copyright{
+    font-size:13px;
+    color:var(--paper-dim);
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .platform-grid{grid-template-columns:1fr;}
+    .platform-card{border-left:none; border-top:1px solid var(--line);}
+    .platform-card:first-child{border-top:none;}
+    .process-grid{grid-template-columns:1fr 1fr;}
+    .results-grid{grid-template-columns:1fr;}
+    .stat{border-left:none; border-top:1px solid var(--line);}
+    .stat:first-child{border-top:none;}
+    .cta-panel{grid-template-columns:1fr; padding:36px 28px;}
+    .navlinks{display:none;}
+  }
+  @media (max-width:520px){
+    .process-grid{grid-template-columns:1fr;}
+    .wrap{padding:0 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="wordmark"><span class="dot"></span>Adszone</div>
+    <div class="navlinks">
+      <a href="#platforms">Platforms</a>
+      <a href="#process">Process</a>
+      <a href="#results">Results</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="btn btn-primary">Book an audit</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap" style="border-bottom:none;">
+    <div class="hero-grid">
+      <div>
+        <h1>Every platform runs on attention. We spend yours where it compounds.</h1>
+        <p class="lede">Adszone plans, builds, and optimizes paid campaigns across Meta, Snapchat, and Google — one team, one dashboard, one number that actually matters: return on ad spend.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Book an audit</a>
+          <a href="#platforms" class="btn btn-ghost">See what we run</a>
+        </div>
+      </div>
+
+      <div class="panel ticker">
+        <div class="ticker-row">
+          <div class="mark mark-meta"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="12" r="6" fill="white" opacity="0.9"/><circle cx="15" cy="12" r="6" fill="white" opacity="0.55"/></svg></div>
+          <div class="ticker-info">
+            <p class="label">Managed spend</p>
+            <p class="platform">Meta Ads</p>
+          </div>
+          <div class="ticker-num" data-count="1420000" data-prefix="$">$0</div>
+        </div>
+        <div class="ticker-row">
+          <div class="mark mark-snap"><svg viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="4" fill="#12162A"/></svg></div>
+          <div class="ticker-info">
+            <p class="label">Managed spend</p>
+            <p class="platform">Snapchat Ads</p>
+          </div>
+          <div class="ticker-num" data-count="380000" data-prefix="$">$0</div>
+        </div>
+        <div class="ticker-row">
+          <div class="mark mark-google"><svg viewBox="0 0 24 24" fill="none"><polygon points="12,6 18,17 6,17" fill="#12162A"/></svg></div>
+          <div class="ticker-info">
+            <p class="label">Managed spend</p>
+            <p class="platform">Google Ads</p>
+          </div>
+          <div class="ticker-num" data-count="960000" data-prefix="$">$0</div>
+        </div>
+        <div class="ticker-foot">Live across 40+ active accounts this quarter.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platforms" class="wrap">
+    <div class="section-head">
+      <h2>Three platforms, one media plan</h2>
+      <p>Budget moves to whichever channel is earning it, based on the same weekly numbers — not three separate agencies with three separate stories.</p>
+    </div>
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div class="mark mark-meta"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="12" r="6" fill="white" opacity="0.9"/><circle cx="15" cy="12" r="6" fill="white" opacity="0.55"/></svg></div>
+        <h3>Meta Ads</h3>
+        <p class="desc">Facebook and Instagram, built for the feed people actually scroll.</p>
+        <ul>
+          <li>Feed, Story &amp; Reels placements</li>
+          <li>Advantage+ shopping campaigns</li>
+          <li>Creative testing at scale</li>
+          <li>Catalog &amp; retargeting setup</li>
+        </ul>
+      </div>
+      <div class="platform-card">
+        <div class="mark mark-snap"><svg viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="4" fill="#12162A"/></svg></div>
+        <h3>Snapchat Ads</h3>
+        <p class="desc">Reaching the audience that's already tuned out banner ads.</p>
+        <ul>
+          <li>Story &amp; Spotlight placements</li>
+          <li>AR lens &amp; filter campaigns</li>
+          <li>Gen Z &amp; young-adult targeting</li>
+          <li>Collection ads for product drops</li>
+        </ul>
+      </div>
+      <div class="platform-card">
+        <div class="mark mark-google"><svg viewBox="0 0 24 24" fill="none"><polygon points="12,6 18,17 6,17" fill="#12162A"/></svg></div>
+        <h3>Google Ads</h3>
+        <p class="desc">Showing up for the exact moment someone is ready to buy.</p>
+        <ul>
+          <li>Search &amp; Shopping campaigns</li>
+          <li>Performance Max setup</li>
+          <li>YouTube video ads</li>
+          <li>Conversion tracking &amp; feed audits</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="process" class="wrap">
+    <div class="section-head">
+      <h2>How an account starts with us</h2>
+      <p>Four stages, same order every time — nothing launches until the tracking underneath it is trustworthy.</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-step">
+        <span class="num">01</span>
+        <h3>Audit</h3>
+        <p>We review past spend, tracking, and creative to find where budget has been leaking.</p>
+      </div>
+      <div class="process-step">
+        <span class="num">02</span>
+        <h3>Build</h3>
+        <p>Campaign structure, audiences, and tracking get rebuilt around one shared reporting view.</p>
+      </div>
+      <div class="process-step">
+        <span class="num">03</span>
+        <h3>Launch</h3>
+        <p>Campaigns go live in small, measurable batches so we know exactly what's driving results.</p>
+      </div>
+      <div class="process-step">
+        <span class="num">04</span>
+        <h3>Optimize</h3>
+        <p>Weekly budget shifts toward whatever channel and creative are earning their spend.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="wrap">
+    <div class="section-head">
+      <h2>What clients see in the first 90 days</h2>
+      <p>Averages across active accounts running Meta, Snapchat, or Google — updated quarterly.</p>
+    </div>
+    <div class="results-grid">
+      <div class="stat">
+        <span class="num"><span class="count-target" data-count="4.2" data-decimals="1">0</span><span class="accent">x</span></span>
+        <p>Average return on ad spend across managed accounts</p>
+      </div>
+      <div class="stat">
+        <span class="num"><span class="count-target" data-count="38" data-decimals="0">0</span><span class="accent">%</span></span>
+        <p>Average drop in cost-per-acquisition within 60 days</p>
+      </div>
+      <div class="stat">
+        <span class="num"><span class="count-target" data-count="120" data-decimals="0">0</span><span class="accent">+</span></span>
+        <p>Campaigns actively managed across all three platforms</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="wrap cta-section" style="border-bottom:none;">
+    <div class="cta-panel">
+      <div>
+        <h2>Ready to see where your budget's leaking?</h2>
+        <p>Send your email and we'll get back to you with a time for a free 30-minute account audit — no deck, just your actual numbers.</p>
+      </div>
+      <form class="audit-form" id="auditForm">
+        <input type="text" id="nameInput" placeholder="Your name" required aria-label="Your name">
+        <input type="tel" id="whatsappInput" placeholder="WhatsApp number" required aria-label="WhatsApp number">
+        <select id="serviceInput" required aria-label="Select a service">
+          <option value="" disabled selected>Select a service</option>
+          <option value="meta">Meta Ads</option>
+          <option value="snapchat">Snapchat Ads</option>
+          <option value="google">Google Ads</option>
+          <option value="all">All three platforms</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Request my audit</button>
+        <span class="form-note" id="formNote"></span>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="footer-row">
+    <div class="wordmark"><span class="dot"></span>Adszone</div>
+    <div class="footer-links">
+      <a href="#platforms">Platforms</a>
+      <a href="#process">Process</a>
+      <a href="#results">Results</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="copyright">© 2026 Adszone</div>
+  </div>
+</footer>
+
+<script>
+  // Hero ticker: animate spend numbers up once on load
+  function animateValue(el, end, duration, prefix, decimals){
+    const start = 0;
+    const startTime = performance.now();
+    function step(now){
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = start + (end - start) * eased;
+      el.textContent = (prefix || '') + (decimals ? value.toFixed(decimals) : Math.round(value).toLocaleString());
+      if(progress < 1){
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = (prefix || '') + (decimals ? end.toFixed(decimals) : end.toLocaleString());
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.ticker-num').forEach(el => {
+    const end = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    if(reduceMotion){
+      el.textContent = prefix + end.toLocaleString();
+    } else {
+      animateValue(el, end, 1400, prefix, 0);
+    }
+  });
+
+  // Results stats: animate when scrolled into view
+  const statTargets = document.querySelectorAll('.count-target');
+  if('IntersectionObserver' in window && !reduceMotion){
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const el = entry.target;
+          const end = parseFloat(el.dataset.count);
+          const decimals = parseInt(el.dataset.decimals || '0', 10);
+          animateValue(el, end, 1200, '', decimals);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    statTargets.forEach(el => observer.observe(el));
+  } else {
+    statTargets.forEach(el => {
+      const end = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      el.textContent = decimals ? end.toFixed(decimals) : end.toLocaleString();
+    });
+  }
+
+  // Contact form: simple client-side confirmation (no backend)
+  const form = document.getElementById('auditForm');
+  const note = document.getElementById('formNote');
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const name = document.getElementById('nameInput').value.trim();
+    const whatsapp = document.getElementById('whatsappInput').value.trim();
+    const service = document.getElementById('serviceInput').value;
+    const whatsappValid = /^[0-9+\s-]{7,15}$/.test(whatsapp);
+
+    if(!name){
+      note.textContent = 'Enter your name to request an audit.';
+      note.classList.remove('success');
+      return;
+    }
+    if(!whatsappValid){
+      note.textContent = 'Enter a valid WhatsApp number.';
+      note.classList.remove('success');
+      return;
+    }
+    if(!service){
+      note.textContent = 'Select a service to continue.';
+      note.classList.remove('success');
+      return;
+    }
+
+    // Save into the same shared storage key the admin panel reads from
+    try{
+      const existing = await window.storage.get('adszone:leads', true);
+      const leads = existing ? JSON.parse(existing.value) : [];
+      leads.push({
+        id: 'l_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+        name: name,
+        whatsapp: whatsapp,
+        service: service,
+        status: 'New'
+      });
+      await window.storage.set('adszone:leads', JSON.stringify(leads), true);
+    }catch(err){
+      console.error('Could not save lead:', err);
+    }
+
+    note.textContent = "Thanks, " + name + " — we'll reach out on WhatsApp shortly to set up your audit.";
+    note.classList.add('success');
+    form.reset();
+  });
+</script>
+
+</body>
+</html>
